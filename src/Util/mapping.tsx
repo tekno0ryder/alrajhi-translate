@@ -1,10 +1,8 @@
 import { ErrorCodesType, ExcelType } from "../types/Input";
-import { OutputType } from "../types/Output";
 
 export const mapping = (excel: ExcelType[], errorCodes: ErrorCodesType) => {
   console.log("Start Mapping with error codes", errorCodes);
-  const output: OutputType = {};
-  const inExcelOnly: OutputType = {};
+  const excelOnlyOutput: ErrorCodesType = {};
 
   for (const excelObject of excel) {
     const key = excelObject.errorCode;
@@ -12,17 +10,14 @@ export const mapping = (excel: ExcelType[], errorCodes: ErrorCodesType) => {
     const obj = errorCodes[key];
 
     if (obj) {
-      output[key] = {
-        en: excelObject.en,
-        ar: excelObject.ar,
-      };
+      errorCodes[key] = excelObject.ar;
     } else {
-      inExcelOnly[key] = excelObject;
+      excelOnlyOutput[key] = excelObject.en;
     }
   }
 
-  console.log("result", output);
-  console.log("not found", inExcelOnly);
+  console.log("result", errorCodes);
+  console.log("not found", excelOnlyOutput);
 
-  return { output, excelOnlyOutput: inExcelOnly };
+  return { errorCodes, excelOnlyOutput };
 };

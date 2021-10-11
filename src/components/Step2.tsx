@@ -32,16 +32,17 @@ export const Step2 = ({ setErrorCodes, nextStep }: PropsType) => {
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* register your input into the hook by invoking the "register" function */}
+
         <textarea
           placeholder={"{}"}
           rows={30}
-          cols={30}
-          style={{ maxWidth: "100%" }}
+          style={{ width: "80%" }}
           {...register("errorCodes", { required: true })}
         />
-
-        <br />
-        <br />
+        <p>
+          <b>Note: </b> Feel free to add extra keys not in the excel file, i
+          won't remove them!
+        </p>
         {/* errors will return when field validation fails  */}
         {errors.errorCodes && <div>This field is required</div>}
         <input type="submit" disabled={isSubmitting} />

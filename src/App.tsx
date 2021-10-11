@@ -6,7 +6,6 @@ import { Step1 } from "./components/Step1";
 import { Step2 } from "./components/Step2";
 import { Step3 } from "./components/Step3";
 import { ErrorCodesType, ExcelType } from "./types/Input";
-import { OutputType } from "./types/Output";
 
 function App() {
   // Step1
@@ -23,6 +22,12 @@ function App() {
   return (
     <div>
       <h1>[Ejada] Translate Al-Rajhi Error Codes </h1>
+      <header>
+        The purpose of this script is to take two inputs (Excel file, JSON
+        object) and it will map and replace your english translation with arabic
+        ones
+      </header>
+      <br />
       <StepWizard>
         {/*//@ts-ignore*/}
         <Step1 setExcel={setExcel} />
