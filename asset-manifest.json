@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/alrajhi-translate/static/css/main.7cc833de.chunk.css",
+    "main.js": "/alrajhi-translate/static/js/main.026a3068.chunk.js",
+    "main.js.map": "/alrajhi-translate/static/js/main.026a3068.chunk.js.map",
+    "runtime-main.js": "/alrajhi-translate/static/js/runtime-main.5dd86818.js",
+    "runtime-main.js.map": "/alrajhi-translate/static/js/runtime-main.5dd86818.js.map",
+    "static/js/2.dc4c578d.chunk.js": "/alrajhi-translate/static/js/2.dc4c578d.chunk.js",
+    "static/js/2.dc4c578d.chunk.js.map": "/alrajhi-translate/static/js/2.dc4c578d.chunk.js.map",
+    "static/js/3.a03d8dbf.chunk.js": "/alrajhi-translate/static/js/3.a03d8dbf.chunk.js",
+    "static/js/3.a03d8dbf.chunk.js.map": "/alrajhi-translate/static/js/3.a03d8dbf.chunk.js.map",
+    "index.html": "/alrajhi-translate/index.html",
+    "static/css/main.7cc833de.chunk.css.map": "/alrajhi-translate/static/css/main.7cc833de.chunk.css.map",
+    "static/js/2.dc4c578d.chunk.js.LICENSE.txt": "/alrajhi-translate/static/js/2.dc4c578d.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5dd86818.js",
+    "static/js/2.dc4c578d.chunk.js",
+    "static/css/main.7cc833de.chunk.css",
+    "static/js/main.026a3068.chunk.js"
+  ]
+}
