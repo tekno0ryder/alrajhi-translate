@@ -1,6 +1,7 @@
 import readXlsxFile from "read-excel-file";
 import { useForm } from "react-hook-form";
 import { StepWizardChildProps } from "react-step-wizard";
+import React from "react";
 
 const schema = {
   "Error Code": {
@@ -41,8 +42,16 @@ export const Step1 = ({ nextStep, setExcel }: PropsType) => {
 
   return (
     <div>
+      <header>
+        The purpose of this script is to take two inputs (Excel file, JSON
+        object) and it will map and replace your english translation with arabic
+        ones
+      </header>
+      <br />
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* register your input into the hook by invoking the "register" function */}
+
+        <label htmlFor={"file"}>Excel file: </label>
         <input
           type="file"
           accept=".xlsx"

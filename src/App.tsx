@@ -12,22 +12,10 @@ function App() {
   const [excel, setExcel] = useState<ExcelType[]>();
   // Step2
   const [errorCodes, setErrorCodes] = useState<ErrorCodesType>();
-  // Step3
-  // const [output, setOutput] = useState<OutputType>();
-  // const [excelOnlyOutput, setExcelOnlyOutput] = useState<OutputType>();
 
-  // @ts-ignore
-  // @ts-ignore
-  // @ts-ignore
   return (
     <div>
-      <h1>[Ejada] Translate Al-Rajhi Error Codes </h1>
-      <header>
-        The purpose of this script is to take two inputs (Excel file, JSON
-        object) and it will map and replace your english translation with arabic
-        ones
-      </header>
-      <br />
+      <h1>Translate Al-Rajhi Error Codes </h1>
       <StepWizard>
         {/*//@ts-ignore*/}
         <Step1 setExcel={setExcel} />

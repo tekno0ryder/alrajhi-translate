@@ -32,7 +32,7 @@ export const Step2 = ({ setErrorCodes, nextStep }: PropsType) => {
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* register your input into the hook by invoking the "register" function */}
-
+        <header>Error Codes JSON object: </header>
         <textarea
           placeholder={"{}"}
           rows={30}
