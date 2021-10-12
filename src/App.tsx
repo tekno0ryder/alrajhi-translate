@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import StepWizard from "react-step-wizard";
 
 import "./App.css";
 import { Step1 } from "./components/Step1";
@@ -16,14 +15,14 @@ function App() {
   return (
     <div>
       <h1>Translate Al-Rajhi Error Codes </h1>
-      <StepWizard>
-        {/*//@ts-ignore*/}
-        <Step1 setExcel={setExcel} />
-        {/*//@ts-ignore*/}
-        <Step2 setErrorCodes={setErrorCodes} />
-        {/*//@ts-ignore*/}
-        <Step3 excel={excel!} errorCodes={errorCodes!} />
-      </StepWizard>
+      <p>
+        The purpose of this script is to take two inputs (Excel file, JSON
+        object) and it will map and replace your english translation with arabic
+        ones
+      </p>
+      <Step1 setExcel={setExcel} />
+      <Step2 setErrorCodes={setErrorCodes} />
+      {excel && errorCodes && <Step3 excel={excel!} errorCodes={errorCodes!} />}
     </div>
   );
 }
