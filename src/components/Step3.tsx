@@ -29,21 +29,21 @@ export const Step3 = ({ excel, errorCodes }: PropType) => {
   return (
     <div ref={ref}>
       <h2>Step 3: Output</h2>
-      <p> Successfuly translated {Object.keys(output!).length} strings</p>
-      <p>
-        These translations are found in excel but not in your input, just saying
-        if you're interested:
-      </p>
-      <textarea
-        style={{ width: "80%" }}
-        rows={10}
-        value={JSON5.stringify(excelOnlyOutput, { space: "\t" })}
-      />
+
       <h4>Final Output</h4>
+      <p>
+        <b>Note:</b> Translations not found in Excel are kept AS IS
+      </p>
       <textarea
         style={{ width: "80%" }}
         rows={30}
         value={JSON5.stringify(output, { space: "\t" })}
+      />
+      <p>[If interested] Translations found in Excel but NOT in your JSON:</p>
+      <textarea
+        style={{ width: "80%" }}
+        rows={10}
+        value={JSON5.stringify(excelOnlyOutput, { space: "\t" })}
       />
     </div>
   );

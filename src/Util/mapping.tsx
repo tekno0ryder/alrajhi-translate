@@ -16,7 +16,7 @@ export const mapping = (excel: ExcelType[], errorCodes: ErrorCodesType) => {
     if (obj) {
       errorCodesCopy[key] = excelObject.ar;
     } else {
-      excelOnlyOutput[key] = excelObject.en;
+      excelOnlyOutput[key] = excelObject.ar;
     }
   }
 

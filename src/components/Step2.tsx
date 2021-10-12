@@ -30,10 +30,6 @@ export const Step2 = ({ setErrorCodes }: PropsType) => {
   return (
     <div>
       <h2>Step 2: Error Codes JSON</h2>
-      <p>
-        <b>Note: </b> Feel free to add extra keys not in the excel file, i won't
-        remove them!
-      </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <textarea
           placeholder={"{}"}
