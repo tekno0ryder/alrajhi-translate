@@ -1,3 +1,3 @@
-export type ExcelType = { errorCode: string; en: string; ar: string };
+export type ExcelType = { key: string; en: string; ar: string };
 
-export type ErrorCodesType = { [key: string]: string };
+export type inputJsonType = { [key: string]: any };

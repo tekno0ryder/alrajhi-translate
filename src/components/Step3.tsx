@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { mapping } from "../Util/mapping";
-import { ErrorCodesType, ExcelType } from "../types/Input";
+import { inputJsonType, ExcelType } from "../types/Input";
 import JSON5 from "json5";
 
 type PropType = {
   excel: ExcelType[];
-  errorCodes: ErrorCodesType;
+  errorCodes: inputJsonType;
 };
 
 export const Step3 = ({ excel, errorCodes }: PropType) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [output, setOutput] = useState<ErrorCodesType>();
-  const [excelOnlyOutput, setExcelOnlyOutput] = useState<ErrorCodesType>();
+  const [output, setOutput] = useState<inputJsonType>();
+  const [excelOnlyOutput, setExcelOnlyOutput] = useState<inputJsonType>();
 
   const ref = useRef<HTMLDivElement>(null);
 
