@@ -1,8 +1,3 @@
-export type ExcelType = {
-  service: string;
-  key: string;
-  en: string;
-  ar: string;
-};
+export type ExcelType = { [key: string]: any };
 
-export type inputJsonType = { [key: string]: any };
+export type inputObjectType = { [key: string]: any };

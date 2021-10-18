@@ -3,11 +3,16 @@ import { useForm } from "react-hook-form";
 import React from "react";
 import { isNaN } from "lodash";
 import _ from "lodash";
-import { ExcelType } from "../types/Input";
 
 type PropsType = {
   setExcel: Function;
 };
+
+const defaultSheetNumber = 1;
+const defaultCategoryCell = "Service";
+const defaultKeyCell = "Key";
+const defaultEnglishCell = "English";
+const defaultArabicCell = "Arabic";
 
 export const Step1 = ({ setExcel }: PropsType) => {
   const {
@@ -16,37 +21,60 @@ export const Step1 = ({ setExcel }: PropsType) => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const postProcess = (rows: ExcelType[]) => {
+  const makeFinalObject = (rows: any[]) => {
     const final: any = {};
-    let lastService;
+    let lastCategory;
+    let lastNestedCategory;
     for (const row of rows) {
-      const service = row.service?.trim();
-
-      // Assign new serive if we find one
-      if (service) {
-        lastService = service;
+      const category = row.category;
+      // Assign new category if we find one
+      if (category) {
+        const splitted = category.split(".");
+        // Check if nested or not
+        if (splitted.length === 2) {
+          lastCategory = splitted[0];
+          lastNestedCategory = splitted[1];
+        } else {
+          lastCategory = category;
+          lastNestedCategory = null;
+        }
       }
 
-      if (lastService) {
-        final[lastService] = {
-          ...final[lastService],
+      if (!row.key) {
+        // Either this row has category key only or completely empty
+        continue;
+      }
+
+      // Exist 2nd level
+      if (lastCategory && lastNestedCategory) {
+        final[lastCategory][lastNestedCategory] = {
+          ...final[lastCategory][lastNestedCategory],
           [row.key]: { en: row.en, ar: row.ar },
         };
-      } else {
+        // Exist 1st level only
+      } else if (lastCategory) {
+        final[lastCategory] = {
+          ...final[lastCategory],
+          [row.key]: { en: row.en, ar: row.ar },
+        };
+      }
+      // Top Level
+      else {
         final[row.key] = { ...final[row.key], en: row.en, ar: row.ar };
       }
     }
-    console.log("final", final);
+    return final;
   };
 
   const onSubmit = async (data: any) => {
     try {
       const map = {
-        Service: "service",
-        Key: "key",
-        English: "en",
-        Arabic: "ar",
+        [data.key]: "key",
+        [data.en]: "en",
+        [data.ar]: "ar",
+        ...(data.category && { [data.category]: "category" }),
       };
+
       const sheetParsed = parseInt(data.sheet);
       const parsed = await readXlsxFile(data.file[0], {
         map,
@@ -55,9 +83,10 @@ export const Step1 = ({ setExcel }: PropsType) => {
       if (parsed.errors.length) {
         throw parsed.errors;
       }
-      const postProcessed = postProcess(parsed.rows as ExcelType[]);
+      console.log("parsed", parsed);
+      const postProcessed = makeFinalObject(parsed.rows);
+      console.log("postProcessed", postProcessed);
       setExcel(postProcessed);
-      console.log(parsed);
     } catch (e) {
       alert(e);
       console.log(e);
@@ -74,10 +103,43 @@ export const Step1 = ({ setExcel }: PropsType) => {
           <label htmlFor={"sheet"}>Sheet: </label>
           <input
             type="text"
-            placeholder="Name or Number 1,2,3"
+            defaultValue={defaultSheetNumber}
+            placeholder="Number 1,2,3"
             {...register("sheet", { required: true })}
           />
           <br /> <br />
+          <label htmlFor={"category"}>Category Cell (optional): </label>
+          <input
+            type="text"
+            defaultValue={defaultCategoryCell}
+            placeholder="Cell Name"
+            {...register("category")}
+          />
+          <br /> <br />
+          <label htmlFor={"key"}>Key Cell: </label>
+          <input
+            type="text"
+            defaultValue={defaultKeyCell}
+            placeholder="Cell Name"
+            {...register("key", { required: true })}
+          />
+          <br /> <br />
+          <label htmlFor={"en"}>EN Cell: </label>
+          <input
+            type="text"
+            defaultValue={defaultEnglishCell}
+            placeholder="Cell Name"
+            {...register("en", { required: true })}
+          />
+          <label htmlFor={"ar"}> AR Cell: </label>
+          <input
+            type="text"
+            defaultValue={defaultArabicCell}
+            placeholder="Cell Name"
+            {...register("ar", { required: true })}
+          />
+          <br />
+          <br />
           <input
             type="file"
             accept=".xlsx"

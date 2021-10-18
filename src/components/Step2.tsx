@@ -1,27 +1,22 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import readXlsxFile from "read-excel-file";
-import * as JSON5 from "json5";
 
 type PropsType = {
-  setInputJson: Function;
+  setInputObject: Function;
 };
 
-export const Step2 = ({ setInputJson }: PropsType) => {
+export const Step2 = ({ setInputObject }: PropsType) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const onSubmit = async ({ inputJson }: any) => {
+  const onSubmit = async ({ inputObject }: any) => {
     try {
-      let inputJsonWithoutComma;
-      if (inputJson.endsWith(",")) {
-        inputJsonWithoutComma = inputJson.replace(/.$/, "");
-      }
-      const parsed = JSON5.parse(inputJsonWithoutComma ?? inputJson);
-      setInputJson(parsed);
+      let en;
+      eval("en =" + inputObject);
+      setInputObject(en);
     } catch (e) {
       console.log(e);
       alert(e);
@@ -29,17 +24,18 @@ export const Step2 = ({ setInputJson }: PropsType) => {
   };
   return (
     <div>
-      <h2>Step 2: Input JSON</h2>
+      <h2>Step 2: Input JS Object</h2>
+      <p>We're going to eval() your object to our variable (let en)</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <textarea
-          placeholder={"{}"}
+          defaultValue={"{}"}
           rows={30}
-          style={{ width: "80%" }}
-          {...register("inputJson", { required: true })}
+          style={{ fontSize: "1rem", width: "80%" }}
+          {...register("inputObject", { required: true })}
         />
 
         {/* errors will return when field validation fails  */}
-        {errors.inputJson && <div>This field is required</div>}
+        {errors.inputObject && <div>This field is required</div>}
         <br />
         <input type="submit" disabled={isSubmitting} />
       </form>

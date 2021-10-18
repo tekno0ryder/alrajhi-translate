@@ -1,17 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { mapping } from "../Util/mapping";
-import { inputJsonType, ExcelType } from "../types/Input";
+import { inputObjectType, ExcelType } from "../types/Input";
 import JSON5 from "json5";
 
 type PropType = {
-  excel: ExcelType[];
-  errorCodes: inputJsonType;
+  excel: ExcelType;
+  errorCodes: inputObjectType;
 };
 
 export const Step3 = ({ excel, errorCodes }: PropType) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [output, setOutput] = useState<inputJsonType>();
-  const [excelOnlyOutput, setExcelOnlyOutput] = useState<inputJsonType>();
+  const [output, setOutput] = useState<inputObjectType>();
+  const [excelOnlyOutput, setExcelOnlyOutput] = useState<inputObjectType>();
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -21,8 +21,14 @@ export const Step3 = ({ excel, errorCodes }: PropType) => {
     setOutput(output.errorCodesCopy);
     setExcelOnlyOutput(output.excelOnlyOutput);
     setIsLoading(false);
-    ref.current && ref.current.scrollIntoView({ behavior: "smooth" });
   }, [excel, errorCodes]);
+
+  useLayoutEffect(() => {
+    // When processing done
+    if (!isLoading) {
+      ref.current && ref.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [isLoading]);
 
   if (isLoading) return <h3>We're cooking your translation!</h3>;
 
@@ -35,14 +41,16 @@ export const Step3 = ({ excel, errorCodes }: PropType) => {
         <b>Note:</b> Translations not found in Excel are kept AS IS
       </p>
       <textarea
-        style={{ width: "80%" }}
+        readOnly
+        style={{ fontSize: "1rem", width: "80%" }}
         rows={30}
         value={JSON5.stringify(output, { space: "\t" })}
       />
       <p>[If interested] Translations found in Excel but NOT in your JSON:</p>
       <textarea
-        style={{ width: "80%" }}
-        rows={10}
+        readOnly
+        style={{ fontSize: "1rem", width: "80%" }}
+        rows={30}
         value={JSON5.stringify(excelOnlyOutput, { space: "\t" })}
       />
     </div>
