@@ -14,10 +14,11 @@ function App() {
 
   return (
     <div>
-      <h1>Translate Al-Rajhi Error Codes </h1>
+      <h1>Translate Al-Rajhi</h1>
       <p>
         The purpose of this script is to take two inputs (Excel file, JS object)
-        and it will map and replace your english translation with arabic ones
+        and it will map and replace your english JS object translations with
+        arabic ones from excel sheet
       </p>
       <p>
         <ul>
