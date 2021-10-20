@@ -1,16 +1,7 @@
 // @ts-nocheck
 import { NestedObject } from "../types/Input";
 import _ from "lodash";
-
-const assignParentKey = (obj: any, key1: any, key2?: any, key3?: any) => {
-  obj[key1] = obj[key1] ?? {};
-  if (key2) {
-    obj[key1][key2] = obj[key1][key2] ?? {};
-  }
-  if (key3) {
-    obj[key1][key2][key3] = obj[key1][key2][key3] ?? {};
-  }
-};
+import { getArabic, assignParentKey } from "./util";
 
 export const mapExcelToJS = (
   excel: NestedObject,
@@ -72,37 +63,75 @@ export const mapExcelToJS = (
   return { inputObjectCopy, excelOnlyOutput };
 };
 
-export const mapJSToExcel = (inputEnglishObject: NestedObject) => {
+//TODO: Arabic
+export const mapJSToExcel = (
+  inputEnglishObject: NestedObject,
+  inputArabicObject: NestedObject
+) => {
   const final: [][] = [];
-  final.push([]);
+  let lastCategory;
 
-  const add = (category, key, en) => {
+  // Columns
+  final.push([
+    { value: "Service", fontWeight: "bold" },
+    { value: "Key", fontWeight: "bold" },
+    { value: "English", fontWeight: "bold", align: "left" },
+    { value: "Arabic", fontWeight: "bold", align: "right" },
+  ]);
+
+  const add = (category, key, en, ar) => {
+    const isNewCategory = category !== lastCategory;
+
+    // Update last category if we got a new category
+    if (isNewCategory) {
+      lastCategory = category;
+    }
+
     const obj = [
-      // category
-      { value: category },
+      // Category
+      // Do not repeat category in every row
+      isNewCategory
+        ? { value: category, wrap: true, fontWeight: "bold" }
+        : { value: "" },
       // key
       { value: key },
       // en
       { value: en },
+      // ar
+      { value: ar },
     ];
+
     final.push(obj);
   };
 
+  let currentCategory;
+  let arabic;
   // Top Level
   for (const [excelKey, excelVal] of Object.entries(inputEnglishObject)) {
     if (typeof excelVal === "string") {
-      add("", excelKey, excelVal);
+      arabic = getArabic(inputArabicObject, excelKey);
+      add("", excelKey, excelVal, arabic);
     } else {
       // 1st Level
       for (const [excelKey1, excelVal1] of Object.entries(excelVal)) {
         if (typeof excelVal1 === "string") {
-          add(excelKey, excelKey1, excelVal1);
+          currentCategory = excelKey;
+
+          arabic = getArabic(inputArabicObject, excelKey, excelKey1);
+          add(currentCategory, excelKey1, excelVal1, arabic);
         } else {
           // 2st Level
           for (const [excelKey2, excelVal2] of Object.entries(
             excelVal1 as any
           )) {
-            add(`${excelKey}.${excelKey1}`, excelKey2, excelVal2);
+            arabic = getArabic(
+              inputArabicObject,
+              excelKey,
+              excelKey1,
+              excelKey2
+            );
+            currentCategory = `${excelKey}.${excelKey1}`;
+            add(currentCategory, excelKey2, excelVal2, arabic);
           }
         }
       }

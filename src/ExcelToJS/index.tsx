@@ -14,7 +14,7 @@ const ExcelToJS = () => {
       <p>
         The purpose of this script is to take two inputs (Excel file, JS object)
         and it will map and replace your english JS object translations with
-        arabic ones from excel sheet
+        arabic ones from excel sheet.
       </p>
       <p>
         <ul>

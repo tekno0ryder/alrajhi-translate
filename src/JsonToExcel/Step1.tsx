@@ -15,11 +15,14 @@ const Step1 = ({}: propTypes) => {
 
   const onSubmit = async ({ enInput, arInput }: any) => {
     try {
-      let en: NestedObject, ar: NestedObject;
+      let en: NestedObject = {};
+      let ar: NestedObject = {};
+
       eval(`en = ${enInput}; ar = ${arInput}`);
-      const mapped = mapJSToExcel(en!);
+      const mapped = mapJSToExcel(en!, ar!);
+
       await writeXlsxFile(mapped, {
-        fileName: "file.xlsx",
+        fileName: "JSToExcel.xlsx",
       });
     } catch (e) {
       console.log(e);
