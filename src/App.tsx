@@ -1,55 +1,28 @@
 import React, { useState } from "react";
 
 import "./App.css";
-import { Step1 } from "./components/Step1";
-import { Step2 } from "./components/Step2";
-import { Step3 } from "./components/Step3";
-import { inputObjectType, ExcelType } from "./types/Input";
+import "react-tabs/style/react-tabs.css";
+import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import ExcelToJS from "./ExcelToJS";
+import JSToExcel from "./JsonToExcel";
 
 function App() {
-  // Step1
-  const [excel, setExcel] = useState<ExcelType>();
-  // Step2
-  const [inputObject, setInputObject] = useState<inputObjectType>();
-
   return (
     <div>
       <h1>Translate Al-Rajhi</h1>
-      <p>
-        The purpose of this script is to take two inputs (Excel file, JS object)
-        and it will map and replace your english JS object translations with
-        arabic ones from excel sheet
-      </p>
-      <p>
-        <ul>
-          <li>
-            Supports Up to 2 levels of nesting
-            <ul>
-              <li>1 level of nesting e.g (category: general)</li>
-              <li>2 levels of nesting e.g (category: general.yes)</li>
-            </ul>
-          </li>
-          <li>Columns should be in row 0 in your excel sheet</li>
-          <li>
-            Key names should be exact, a mistake found like (E80:) while the
-            truth is (E80)
-          </li>
-          <li>
-            Category key should have correct order, within same row of first key
-            relating to it or before it.
-          </li>
-          <li>
-            Mapping is done within same level, This won't work:{" "}
-            {"{E10:error} with { errorCodes: {E10:error} }"}
-            {""}
-          </li>
-        </ul>
-      </p>
-      <Step1 setExcel={setExcel} />
-      <Step2 setInputObject={setInputObject} />
-      {excel && inputObject && (
-        <Step3 excel={excel!} errorCodes={inputObject!} />
-      )}
+      <Tabs>
+        <TabList>
+          <Tab>Excel To JS</Tab>
+          <Tab>JS To Excel</Tab>
+        </TabList>
+
+        <TabPanel>
+          <ExcelToJS />
+        </TabPanel>
+        <TabPanel>
+          <JSToExcel />
+        </TabPanel>
+      </Tabs>
     </div>
   );
 }

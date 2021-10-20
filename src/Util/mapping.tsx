@@ -1,8 +1,8 @@
 // @ts-nocheck
-import { inputObjectType, ExcelType } from "../types/Input";
+import { NestedObject } from "../types/Input";
 import _ from "lodash";
 
-const assignpParentKey = (obj: any, key1: any, key2?: any, key3?: any) => {
+const assignParentKey = (obj: any, key1: any, key2?: any, key3?: any) => {
   obj[key1] = obj[key1] ?? {};
   if (key2) {
     obj[key1][key2] = obj[key1][key2] ?? {};
@@ -12,15 +12,18 @@ const assignpParentKey = (obj: any, key1: any, key2?: any, key3?: any) => {
   }
 };
 
-export const mapping = (excel: ExcelType, inputObject: inputObjectType) => {
+export const mapExcelToJS = (
+  excel: NestedObject,
+  inputObject: NestedObject
+) => {
   console.log("Start Mapping inputObject", inputObject);
-  const excelOnlyOutput: inputObjectType = {};
+  const excelOnlyOutput: NestedObject = {};
 
   // Take a copy of the inputObject to preserve existing values
   const inputObjectCopy = _.cloneDeep(inputObject);
 
+  // Top Level
   for (const [excelKey, excelVal] of Object.entries(excel)) {
-    // Top Level
     if ("en" in excelVal) {
       const obj = inputObjectCopy[excelKey];
       if (obj) {
@@ -28,18 +31,17 @@ export const mapping = (excel: ExcelType, inputObject: inputObjectType) => {
       } else {
         excelOnlyOutput[excelKey] = excelVal.ar ?? excelVal.en;
       }
-    }
-    // 1st Level
-    else {
+    } else {
+      // 1st Level
       for (const [excelKey1, excelVal1] of Object.entries(excelVal)) {
         if ("en" in excelVal1) {
           // Assign {} if undefined
-          assignpParentKey(inputObjectCopy, excelKey);
+          assignParentKey(inputObjectCopy, excelKey);
           const obj = inputObjectCopy[excelKey][excelKey1];
           if (obj) {
             inputObjectCopy[excelKey][excelKey1] = excelVal1.ar ?? excelVal1.en;
           } else {
-            assignpParentKey(excelOnlyOutput, excelKey);
+            assignParentKey(excelOnlyOutput, excelKey);
             excelOnlyOutput[excelKey][excelKey1] = excelVal1.ar ?? excelVal1.en;
           }
         } else {
@@ -48,13 +50,13 @@ export const mapping = (excel: ExcelType, inputObject: inputObjectType) => {
             excelVal1 as any
           )) {
             // Assign {} if undefined
-            assignpParentKey(inputObjectCopy, excelKey, excelKey1);
+            assignParentKey(inputObjectCopy, excelKey, excelKey1);
             const obj = inputObjectCopy[excelKey][excelKey1][excelKey2];
             if (obj) {
               inputObjectCopy[excelKey][excelKey1][excelKey2] =
                 excelVal2.ar ?? excelVal2.ar;
             } else {
-              assignpParentKey(excelOnlyOutput, excelKey, excelKey1);
+              assignParentKey(excelOnlyOutput, excelKey, excelKey1);
               excelOnlyOutput[excelKey][excelKey1][excelKey2] =
                 excelVal2.ar ?? excelVal1.en;
             }
@@ -67,5 +69,45 @@ export const mapping = (excel: ExcelType, inputObject: inputObjectType) => {
   console.log("result", inputObjectCopy);
   console.log("not found", excelOnlyOutput);
 
-  return { errorCodesCopy: inputObjectCopy, excelOnlyOutput };
+  return { inputObjectCopy, excelOnlyOutput };
+};
+
+export const mapJSToExcel = (inputEnglishObject: NestedObject) => {
+  const final: [][] = [];
+  final.push([]);
+
+  const add = (category, key, en) => {
+    const obj = [
+      // category
+      { value: category },
+      // key
+      { value: key },
+      // en
+      { value: en },
+    ];
+    final.push(obj);
+  };
+
+  // Top Level
+  for (const [excelKey, excelVal] of Object.entries(inputEnglishObject)) {
+    if (typeof excelVal === "string") {
+      add("", excelKey, excelVal);
+    } else {
+      // 1st Level
+      for (const [excelKey1, excelVal1] of Object.entries(excelVal)) {
+        if (typeof excelVal1 === "string") {
+          add(excelKey, excelKey1, excelVal1);
+        } else {
+          // 2st Level
+          for (const [excelKey2, excelVal2] of Object.entries(
+            excelVal1 as any
+          )) {
+            add(`${excelKey}.${excelKey1}`, excelKey2, excelVal2);
+          }
+        }
+      }
+    }
+  }
+  console.log(final);
+  return final;
 };

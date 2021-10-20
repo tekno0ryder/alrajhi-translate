@@ -22,15 +22,15 @@ export const Step2 = ({ setInputObject }: PropsType) => {
       alert(e);
     }
   };
+
   return (
     <div>
       <h2>Step 2: Input JS Object</h2>
-      <p>We're going to eval() your object to our variable (let en)</p>
+      <code>let en = </code>
       <form onSubmit={handleSubmit(onSubmit)}>
         <textarea
           defaultValue={"{}"}
           rows={30}
-          style={{ fontSize: "1rem", width: "80%" }}
           {...register("inputObject", { required: true })}
         />
 
@@ -42,3 +42,5 @@ export const Step2 = ({ setInputObject }: PropsType) => {
     </div>
   );
 };
+
+export default Step2;

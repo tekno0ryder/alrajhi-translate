@@ -4,17 +4,17 @@ import React from "react";
 import { isNaN } from "lodash";
 import _ from "lodash";
 
-type PropsType = {
-  setExcel: Function;
-};
-
 const defaultSheetNumber = 1;
 const defaultCategoryCell = "Service";
 const defaultKeyCell = "Key";
 const defaultEnglishCell = "English";
 const defaultArabicCell = "Arabic";
 
-export const Step1 = ({ setExcel }: PropsType) => {
+type PropsType = {
+  setExcel: Function;
+};
+
+const Step1 = ({ setExcel }: PropsType) => {
   const {
     register,
     handleSubmit,
@@ -153,3 +153,5 @@ export const Step1 = ({ setExcel }: PropsType) => {
     </div>
   );
 };
+
+export default Step1;

@@ -1,24 +1,24 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { mapping } from "../Util/mapping";
-import { inputObjectType, ExcelType } from "../types/Input";
+import { mapExcelToJS } from "../Util/mapping";
+import { NestedObject } from "../types/Input";
 import JSON5 from "json5";
 
 type PropType = {
-  excel: ExcelType;
-  errorCodes: inputObjectType;
+  excel: NestedObject;
+  errorCodes: NestedObject;
 };
 
 export const Step3 = ({ excel, errorCodes }: PropType) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [output, setOutput] = useState<inputObjectType>();
-  const [excelOnlyOutput, setExcelOnlyOutput] = useState<inputObjectType>();
+  const [output, setOutput] = useState<NestedObject>();
+  const [excelOnlyOutput, setExcelOnlyOutput] = useState<NestedObject>();
 
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsLoading(true);
-    const output = mapping(excel, errorCodes);
-    setOutput(output.errorCodesCopy);
+    const output = mapExcelToJS(excel, errorCodes);
+    setOutput(output.inputObjectCopy);
     setExcelOnlyOutput(output.excelOnlyOutput);
     setIsLoading(false);
   }, [excel, errorCodes]);
@@ -42,17 +42,17 @@ export const Step3 = ({ excel, errorCodes }: PropType) => {
       </p>
       <textarea
         readOnly
-        style={{ fontSize: "1rem", width: "80%" }}
         rows={30}
         value={JSON5.stringify(output, { space: "\t" })}
       />
       <p>[If interested] Translations found in Excel but NOT in your JSON:</p>
       <textarea
         readOnly
-        style={{ fontSize: "1rem", width: "80%" }}
         rows={30}
         value={JSON5.stringify(excelOnlyOutput, { space: "\t" })}
       />
     </div>
   );
 };
+
+export default Step3;
