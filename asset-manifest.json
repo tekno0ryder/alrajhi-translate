@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/alrajhi-translate/static/css/main.326b0133.chunk.css",
-    "main.js": "/alrajhi-translate/static/js/main.72cb2b13.chunk.js",
-    "main.js.map": "/alrajhi-translate/static/js/main.72cb2b13.chunk.js.map",
+    "main.js": "/alrajhi-translate/static/js/main.b2ba0e1f.chunk.js",
+    "main.js.map": "/alrajhi-translate/static/js/main.b2ba0e1f.chunk.js.map",
     "runtime-main.js": "/alrajhi-translate/static/js/runtime-main.9b8cb8fa.js",
     "runtime-main.js.map": "/alrajhi-translate/static/js/runtime-main.9b8cb8fa.js.map",
     "static/css/2.27175f2b.chunk.css": "/alrajhi-translate/static/css/2.27175f2b.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.27175f2b.chunk.css",
     "static/js/2.4d800b02.chunk.js",
     "static/css/main.326b0133.chunk.css",
-    "static/js/main.72cb2b13.chunk.js"
+    "static/js/main.b2ba0e1f.chunk.js"
   ]
 }
